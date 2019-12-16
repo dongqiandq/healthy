@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.dell.expelliarmus">
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="28" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- SD卡读取权限，用户写入离线定位数据 -->
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+
+    <!-- 子珍项目权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <application
+        android:allowBackup="true"
+        android:name=".MyApplication"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.">
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="mxxT9uFwxd4Qv0W0dMyW7DRaWUBx6mRA" />
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5decdef90cafb26033000aaa">
+        </meta-data>
+
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- 注册 -->
+        <activity android:name=".HospitalCity" />
+
+        <!-- 百度地图定位服务 -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="com.baidu.location.service_v5.0.0" />
+            </intent-filter>
+        </service>
+
+        <!-- 友盟配置第三方登录 -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!--这里的scheme是qq分享要用的，100424468为自己申请的appid，真实项目中需要替换,并未替换-->
+                <data android:scheme="tencent100424468" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- 友盟配置第三方登录 -->
+
+        <activity android:name=".ListViewActivity" />
+        <activity android:name=".IndexDetailsActivity" />
+        <activity android:name=".ShipuActivity" />
+        <activity android:name=".FoodListviewActivity" />
+        <activity android:name=".FoodDetailsActivity" />
+        <activity android:name=".MedicineActivity" />
+        <activity android:name=".MedicineListviewActivity" />
+        <activity android:name=".MedicineDetailsActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".MinePersonDataActivity" />
+        <activity android:name=".MineCollectActivity" />
+        <activity android:name=".MinePersonNameActivity" />
+        <activity android:name=".MineCollectDetailsActivity" />
+        <activity android:name=".MineMenuActivity" />
+        <activity android:name=".MineMenuDetailsActivity" />
+        <activity android:name=".MinePersonReadActivity" />
+        <activity android:name=".MinePersonSettingsActivity" />
+        <activity android:name=".MineSafeSetActivity" />
+        <activity android:name=".MineWordSetActivity" />
+        <activity android:name=".MineBoxActivity" />
+        <activity android:name=".MinePersonBodyActivity" />
+        <activity android:name=".MineWordForgetActivity" />
+        <activity android:name=".MineResetActivity" />
+        <activity android:name=".MineRegisterActivity" />
+        <activity android:name=".MineBoxDetailsActivity" />
+        <activity android:name=".MineAboutActivity" />
+        <activity android:name=".HeartMeasure" />
+    </application>
+
+</manifest>

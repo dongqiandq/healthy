@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#8bc34a</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colroMatreial">#eae9e9</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorBeijing">#ebf1fd</color>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <color name="colorAccentdq">#ff8f8f</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white2">#f5f3f3</color>
+    <color name="colorRed">#ff0000</color>
+    <color name="gray">#bfbfbf</color>
+</resources>

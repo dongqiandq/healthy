@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ededed"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="56dp">
+        <TextView
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:text="‹"
+            android:id="@+id/img_return"
+            android:textSize="50dp"
+            android:textColor="#000"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:layout_marginLeft="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置"
+            android:textColor="#000"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50dp"
+            android:textSize="16sp"
+            android:id="@+id/tv_title"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_set1"
+        android:background="#FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:text="账号与安全"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/img_right1"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/right" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_set2"
+        android:background="#FFFFFF"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:text="关于我们"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/img_right2"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/right" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_exit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="退出登录"
+        android:textSize="17sp"
+        android:background="#FFFFFF"/>
+</LinearLayout>

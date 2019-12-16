@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:fitsSystemWindows="true"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_title_back"
+            android:src="@drawable/fanhui"
+            android:background="@null"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:id="@+id/tv_title"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:background="@drawable/qita_style"
+        android:layout_marginLeft="20dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="55dp"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/btn_search"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@null"
+            android:layout_gravity="center"
+            android:src="@drawable/sousuo"/>
+        <EditText
+            android:id="@+id/et_search"
+            android:hint="请输入搜索内容"
+            android:background="@null"
+            android:textSize="15sp"
+            android:paddingTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <ListView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="100dp"
+        android:id="@+id/lv_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

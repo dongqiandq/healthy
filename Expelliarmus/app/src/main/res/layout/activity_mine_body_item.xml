@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <LinearLayout
+        android:layout_marginTop="6dp"
+        android:orientation="vertical"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <RelativeLayout
+            android:id="@+id/rl_first"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="25dp">
+
+            <TextView
+                android:id="@+id/tv_dataTime"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:text="2019/11/13 10:06"
+                android:textSize="16sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_second"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_first">
+
+            <ImageView
+                android:id="@+id/img_heart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="3dp"
+                android:src="@drawable/mheart" />
+
+            <TextView
+                android:id="@+id/tv_heart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="心率测试感受：正常"
+                android:textColor="#FF3333"
+                android:layout_marginLeft="30dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/img_heart"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp">
+
+                <TextView
+                    android:id="@+id/heart_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="99"
+                    android:textColor="#FF3333" />
+
+                <TextView
+                    android:id="@+id/tv_text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/heart_num"
+                    android:text="次/分"
+                    android:textSize="13sp"
+                    android:layout_marginRight="5dp"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+</LinearLayout>
