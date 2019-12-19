@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,7 @@ public class CommunicateAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         ViewHolder viewHolder = null;
         if (convertView == null){
@@ -79,17 +80,23 @@ public class CommunicateAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        if(LoginUser.getUserImage().contains("/img/header.png")){
-            Glide.with(context).load(Constant.URL+"img/header.png").into(viewHolder.imgHeader);
+        if(listQuestion.get(position).getHeadImg()!=null){
+            RequestOptions requestOptions = new RequestOptions().circleCrop();
+            if(listQuestion.get(position).getHeadImg().contains("/img/header.png")){
+                Glide.with(context).load(Constant.URL+"img/header.png").apply(requestOptions).into(viewHolder.imgHeader);
+            }else{
+                Glide.with(context).load(listQuestion.get(position).getHeadImg()).apply(requestOptions).into(viewHolder.imgHeader);
+            }
         }else{
-            Glide.with(context).load(LoginUser.getUserImage()).into(viewHolder.imgHeader);
+            viewHolder.imgHeader.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.qing1));
         }
-//        viewHolder.imgHeader.setImageBitmap(BitmapFactory.decodeResource(context.getResources(),R.drawable.qing1));
-        viewHolder.name.setText(LoginUser.getUserName());
-        viewHolder.question.setText(listQuestion.get(position).question);
-        final CommentAdapter commentAdapter = new CommentAdapter(listQuestion.get(position).listResponseContent,context,R.layout.comment_item);
-        viewHolder.listComment.setAdapter(commentAdapter);
 
+//        viewHolder.imgHeader.setImageBitmap(BitmapFactory.decodeResource(context.getResources(),R.drawable.qing1));
+        viewHolder.name.setText(listQuestion.get(position).getUserName());
+        viewHolder.question.setText(listQuestion.get(position).question);
+        final CommentAdapter commentAdapter = new CommentAdapter(listQuestion.get(position).getListResponse(),context,R.layout.comment_item);
+        viewHolder.listComment.setAdapter(commentAdapter);
+        setListViewHeightBaseOnChildren(viewHolder.listComment);
         final ViewHolder finalViewHolder = viewHolder;
         final ViewHolder finalViewHolder1 = viewHolder;
         viewHolder.responseSend.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +104,13 @@ public class CommunicateAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if(LoginUser.getPhoneNumber().length()>0){
                     if(finalViewHolder.etResponse.getText().toString().length()!=0){
-                        commentAdapter.notifyList(finalViewHolder.etResponse.getText().toString());
+                        CommunicateQuestions.Comment comment = new CommunicateQuestions.Comment();
+                        comment.setMessageId(listQuestion.get(position).getId());
+                        comment.setSendPersonId(LoginUser.getId());
+                        comment.setSendPersonName(LoginUser.getUserName());
+                        comment.setContent(finalViewHolder.etResponse.getText().toString());
+                        commentAdapter.notifyList(comment);
+                        commentAdapter.notifyDataSetChanged();
                         setListViewHeightBaseOnChildren(finalViewHolder1.listComment);
                         finalViewHolder.etResponse.setText("");
                     }else{

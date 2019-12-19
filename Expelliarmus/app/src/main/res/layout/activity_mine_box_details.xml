@@ -35,6 +35,13 @@
                 android:layout_centerHorizontal="true"
                 android:textSize="18sp"
                 android:id="@+id/tv_title"/>
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="取消收藏"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"/>
         </RelativeLayout>
 
         <LinearLayout
@@ -57,27 +64,60 @@
                 android:layout_height="wrap_content"
                 android:text="药品名称"
                 android:textSize="23dp"/>
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv1"
-                android:textSize="18dp"
-                android:text="通用名称：阿莫西林 "/>
-            <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:text="通用名称："/>
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv1"
+                    android:textSize="18dp"
+                    android:text=""/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv3"
-                android:textSize="18dp"
-                android:text="英文名称：Amoxicillin"/>
-            <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:text="英文名称："/>
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv3"
+                    android:textSize="18dp"
+                    android:text=""/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv4"
-                android:textSize="18dp"
-                android:text="拼音名称：AMOXILIN" />
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:text="拼音名称：" />
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv4"
+                    android:textSize="18dp"
+                    android:text="" />
+            </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="钠盐、钾盐均为白色结晶粉末；无臭或微有特异性臭，有引湿性；遇酸碱或氧化剂迅速失效。在水中极易溶解，乙醇中溶解。普鲁卡因青霉素为白色结晶粉末；遇酸碱或氧化剂迅速失效，甲醇中易溶，水中微溶。"
+                android:text=""
                 android:textSize="18dp"/>
             <TextView
                 android:layout_width="match_parent"
@@ -102,7 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="青霉素钠、钾适用于敏感菌所致的急性感染，如菌血症、败血症、猩红热、丹毒、肺炎、脓胸、扁桃体炎、中耳炎、蜂窝组织炎、疖、痈、急性乳腺炎、心内膜炎、骨髓炎、流行性脑膜炎（流脑）、勾端螺旋体病（对本病 早期疗效较好）、奋森氏咽峡炎、创伤感染、回归热、气性坏疽、炭疽、淋病、放线菌病等。治疗破伤风、白喉宜与相应的抗毒素联用。"
+                android:text=""
                 android:textSize="18dp"/>
             <TextView
                 android:layout_width="match_parent"
@@ -115,9 +155,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="1.肌注：成人１日量为８０万～３２０万单位；儿童１日量为每千克体重３万～５万单位，分为２～４次给予。
-                2.静滴：适用于重病。成人１日量为２４０万～２０００万单位，儿童１日量为每千克体重２０～４０万单位， 分４～６次，加至少量输液中作间歇快速滴注。输液的青霉素（钠盐）浓度一般为每毫升１万～４万单位。
-                3.气雾吸入：２０万～４０万单位／２～４毫升，１日２次。 青霉素钾通常用于肌注，由于注射局部较痛，可以用 ０．２５％利多卡因注射液作为溶剂（较２％苯甲醇注射液为优）。钾盐也可静滴，但必须注意病人体内血钾浓度 和输液的钾含量，并注意滴注速度不可太快。 普鲁卡因青霉素仅供肌注，１次量４０万～８０万单位，每日１次 。 芐星青霉素仅供肌注，１次量６０万单位，１０～１４日１次；１次１２０万单位，１４～２１日１次。"
+                android:text=""
                 android:textSize="18dp"/>
             <TextView
                 android:layout_width="match_parent"
@@ -130,10 +168,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="1.过敏反应：症状轻重不一，最常见为荨麻疹、哮喘、鼻炎，血管和喉水肿，发热，严重者可引起休克。若处置不及时或不当，可导致死亡。发作时间短者仅在用药后数分钟，长者数小时或数日内出现。既可在首次用药后出现， 也可在第２次（更为常见）或以后用药中出现。此外，职业性接触和泪液、母乳、食物等，凡含有本品时，被接触者都有可能发生过敏反应。因此，在哺乳期妇女慎用。当治疗停药在３日以上或用不同厂出品或批号者，应另行皮试，阴性者方可再用。
-                2.普鲁卡因青霉素偶可致一种特异反应。注射药物当时或之后１～２分钟内，自觉有心里难受、濒危恐惧感、头晕、心悸、幻听、幻视等症状。一般无呼吸和循环障碍，多数病人可出现血压升高（可与过敏性休克相鉴别）。一般无需特殊处理，症状维持１～２小时可自行恢复正常。用镇静药（安定）或抗组胺药（肌注苯海拉明２０ｍｇ）有助于恢复。
-                3.低剂量的青霉素不引起毒性反应；大剂量应用，可出现神经ˉ精神症状，如反射亢进、知觉障碍、幻觉、抽搐、昏睡等，也可致短暂的精神失常，停药或降低剂量可恢复。对于少数有血凝功能缺陷的病人，大剂量青霉素可扰乱血凝机理，进而发生出血倾向。
-                4.不宜鞘内给药。"
+                android:text=""
                 android:textSize="18dp"/>
         </LinearLayout>
     </RelativeLayout>

@@ -7,11 +7,14 @@
     <ImageView
         android:id="@+id/iv_photo"
         android:layout_width="match_parent"
-        android:layout_height="220dp" />
+        android:layout_height="200dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:scaleType="fitXY"/>
     <TextView
         android:id="@+id/tv_photoName"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
@@ -21,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="18dp"
+        android:layout_marginLeft="25dp"
         android:text=""
         android:textSize="15dp"/>
 </LinearLayout>

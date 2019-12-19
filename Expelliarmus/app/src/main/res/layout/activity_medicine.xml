@@ -75,7 +75,7 @@
                     android:layout_marginLeft="18sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="胃肠药"/>
+                    android:text="肠胃药"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_marginLeft="10dp"

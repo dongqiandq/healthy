@@ -35,6 +35,7 @@ import java.util.List;
 public class MinePersonBodyActivity extends AppCompatActivity {
     private Button btn_BIM;
     private TextView BIM;
+    private TextView tvBodyStatus;
 
     private List<HeartRecord> lists;
     private SwipeMenuListView lvText;
@@ -44,6 +45,7 @@ public class MinePersonBodyActivity extends AppCompatActivity {
     private User user;
     private EditText height;
     private EditText weight;
+    public static double finalBIM;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,14 +54,38 @@ public class MinePersonBodyActivity extends AppCompatActivity {
         weight = findViewById(R.id.et_weight);
         btn_BIM = findViewById(R.id.btn_getBIM);
         BIM = findViewById(R.id.body_digital);
+        tvBodyStatus = findViewById(R.id.tv_body_status);
 
         //添加用户的身高、体重、BIM
         btn_BIM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //判断用户是否登录，如果登录，则通过用户ID查找出身体指标ID,将该条数据更改
-                SaveHeightAndWeight task1 = new SaveHeightAndWeight();
-                task1.execute(Constant.URL+"SaveHeightAndWeight");
+//                SaveHeightAndWeight task1 = new SaveHeightAndWeight();
+//                task1.execute(Constant.URL+"SaveHeightAndWeight");
+                String str = "0.00";
+                String h = height.getText().toString();
+                String w = weight.getText().toString();
+                if(h.equals("")||h==null||w.equals("")||w==null){
+                    Toast.makeText(MinePersonBodyActivity.this,"请填写数据！",Toast.LENGTH_SHORT).show();
+                }else {
+                    double hh = Double.parseDouble(h);
+                    double ww = Double.parseDouble(w);
+                    str = String.format("%.2f",  ww/(hh*hh));
+                    finalBIM=ww/(hh*hh);
+                    BIM.setText(str);
+                    double data = Double.parseDouble((String)str);
+                    if (data<=18.4){
+                        tvBodyStatus.setText("偏瘦");
+                    }else if (18.4<data && data<=23.9){
+                        tvBodyStatus.setText("正常");
+                    }else if (23.9<data && data<=27.9){
+                        tvBodyStatus.setText("过重");
+                    }else {
+                        tvBodyStatus.setText("肥胖");
+                    }
+
+                }
 
             }
         });
@@ -82,46 +108,57 @@ public class MinePersonBodyActivity extends AppCompatActivity {
     }
 
     //用户存储身高体重数据的异步任务
-    public class SaveHeightAndWeight extends AsyncTask{
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            String judge = "";
-            String str = "0.00";
-            try {
-                HttpURLConnection connection = util.getURLConnection((String)objects[0]);
-                OutputStream os = connection.getOutputStream();
-                String h = height.getText().toString();
-                String w = weight.getText().toString();
-                if(h.equals("")||h==null||w.equals("")||w==null){
-                    Toast.makeText(MinePersonBodyActivity.this,"请填写数据！",Toast.LENGTH_SHORT).show();
-                }else {
-                    double hh = Double.parseDouble(h);
-                    double ww = Double.parseDouble(w);
-                    str = String.format("%.2f",  ww/(hh*hh));
-                    JSONObject object = new JSONObject();
-                    object.put("userTel",user.getPhoneNumber());
-                    object.put("height",hh);
-                    object.put("weight",ww);
-                    object.put("bim",str);
-                    os.write(object.toString().getBytes());
-                }
-                InputStream is = connection.getInputStream();
-                judge = util.readInputStreamToString(is);
-                Log.e("test",judge);
-                util.closeIO(is,os);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-            return str;
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-            BIM.setText(o.toString());
-        }
-    }
+//    public class SaveHeightAndWeight extends AsyncTask{
+//
+//        @Override
+//        protected Object doInBackground(Object[] objects) {
+//            String judge = "";
+//            String str = "0.00";
+//            try {
+//                HttpURLConnection connection = util.getURLConnection((String)objects[0]);
+//                OutputStream os = connection.getOutputStream();
+//                String h = height.getText().toString();
+//                String w = weight.getText().toString();
+//                if(h.equals("")||h==null||w.equals("")||w==null){
+//                    Toast.makeText(MinePersonBodyActivity.this,"请填写数据！",Toast.LENGTH_SHORT).show();
+//                }else {
+//                    double hh = Double.parseDouble(h);
+//                    double ww = Double.parseDouble(w);
+//                    str = String.format("%.2f",  ww/(hh*hh));
+////                    JSONObject object = new JSONObject();
+////                    object.put("userTel",user.getPhoneNumber());
+////                    object.put("height",hh);
+////                    object.put("weight",ww);
+////                    object.put("bim",str);
+////                    os.write(object.toString().getBytes());
+//                }
+//                InputStream is = connection.getInputStream();
+//                judge = util.readInputStreamToString(is);
+//                Log.e("test",judge);
+//                util.closeIO(is,os);
+//            }catch(Exception e){
+//                e.printStackTrace();
+//            }
+//            return str;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Object o) {
+//            super.onPostExecute(o);
+//            BIM.setText(o.toString());
+//            double data = Double.parseDouble((String) o);
+//            if (data<=18.4){
+//                tvBodyStatus.setText("偏瘦");
+//            }else if (18.4<data && data<=23.9){
+//                tvBodyStatus.setText("正常");
+//            }else if (23.9<data && data<=27.9){
+//                tvBodyStatus.setText("过重");
+//            }else {
+//                tvBodyStatus.setText("肥胖");
+//            }
+//
+//        }
+//    }
 
 
     //查询用户心率信息

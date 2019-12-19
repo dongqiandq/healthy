@@ -50,11 +50,14 @@ public class FoodDetailsActivity extends AppCompatActivity {
     private String[] materials2;
     private String[] steps;
     private String[] images;
+    private User LoginUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_details);
+        Util util=new Util(FoodDetailsActivity.this);
+        LoginUser=util.getUserInfo();
         findViews();
         id=getIntent().getIntExtra("id",0);
 
@@ -65,15 +68,14 @@ public class FoodDetailsActivity extends AppCompatActivity {
             }
         });
 
-
         btnAddFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null!=LoginUser){
+                if (LoginUser.getPhoneNumber().length()>0){
                     if (ITEM==0){
                         ITEM=1;
                         UpdateMenuAsync updateMenuAsync=new UpdateMenuAsync();
-                        updateMenuAsync.execute(Constant.URL+"MenuCollection",1,id);
+                        updateMenuAsync.execute(Constant.URL+"MenuCollection",LoginUser.getId(),id);
                     }
                 }else {
                     Toast.makeText(FoodDetailsActivity.this,"请先登录，再收藏",Toast.LENGTH_SHORT).show();
@@ -84,7 +86,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
         ivZan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null!=LoginUser){
+                if (LoginUser.getPhoneNumber().length()>0){
                     if (ITEM1 == 0){
                         ivZan.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.zanxuanzhong));
                         zanCount.setText(Integer.parseInt(zanCount.getText().toString())+1+"");
@@ -152,7 +154,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             LinearLayout linearLayout = new LinearLayout(this);
-            params.setMargins(0,10,0,0);
+            params.setMargins(0,10,0,10);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
             linearLayout.setLayoutParams(params);
             addProduceCount(linearLayout,i);
@@ -164,7 +166,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
     //烹饪步骤的数字
     private void addProduceCount(LinearLayout linearLayout,int i){
         final TextView pcText = new TextView(this);
-        pcText.setTextSize(27);
+        pcText.setTextSize(24);
         pcText.setText(i+1+"");
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(50, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(35,0,0,0);
@@ -196,11 +198,11 @@ public class FoodDetailsActivity extends AppCompatActivity {
     //步骤中的文字描述
     private void addMessage(LinearLayout linearLayout,int i){
         final TextView meText = new TextView(this);
-        meText.setTextSize(22);
+        meText.setTextSize(18);
         meText.setText(steps[i]);
         LinearLayout.LayoutParams paramsMe = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        paramsMe.setMargins(0,5,0,5);
+        paramsMe.setMargins(0,5,0,10);
         meText.setLayoutParams(paramsMe);
         linearLayout.addView(meText);
     }
@@ -220,7 +222,6 @@ public class FoodDetailsActivity extends AppCompatActivity {
             }
             llMaterials.addView(linearLayout);
         }
-
     }
 
     //材料

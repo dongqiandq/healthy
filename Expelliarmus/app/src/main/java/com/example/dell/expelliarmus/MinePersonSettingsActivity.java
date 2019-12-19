@@ -18,11 +18,14 @@ public class MinePersonSettingsActivity extends AppCompatActivity {
     private RelativeLayout set2;
     private Button exit;
     private Util util;
+    private User LoginUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_person_settings);
+        util=new Util(this);
+        LoginUser=util.getUserInfo();
 
         util = new Util(this);
         imageView = findViewById(R.id.img_return);

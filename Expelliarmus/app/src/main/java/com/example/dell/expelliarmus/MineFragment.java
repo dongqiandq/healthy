@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import static com.example.dell.expelliarmus.LoginCommonFragment.LoginUser;
 
@@ -63,9 +64,12 @@ public class MineFragment extends Fragment {
         if (LoginUser.getPhoneNumber().length()>0){
             Log.e("user",LoginUser.toString());
             if(LoginUser.getUserImage().contains("/img/header.png")){
-                Glide.with(this).load(Constant.URL+"img/header.png").into(imgHead);
+                RequestOptions requestOptions = new RequestOptions().circleCrop();
+                Glide.with(this).load(Constant.URL+"img/header.png")
+                        .apply(requestOptions).into(imgHead);
             }else{
-                Glide.with(this).load(LoginUser.getUserImage()).into(imgHead);
+                RequestOptions requestOptions = new RequestOptions().circleCrop();
+                Glide.with(this).load(LoginUser.getUserImage()).apply(requestOptions).into(imgHead);
             }
 //            imgHead.setImageDrawable(getResources().getDrawable(R.drawable.yangzi));
             tvClick.setText(LoginUser.getUserName().toString());
@@ -83,9 +87,12 @@ public class MineFragment extends Fragment {
             LoginUser = util.getUserInfo();
             if(LoginUser.getPhoneNumber().length()>0){
                 if(LoginUser.getUserImage().contains("/img/header.png")){
-                    Glide.with(this).load(Constant.URL+"img/header.png").into(imgHead);
+                    RequestOptions requestOptions = new RequestOptions().circleCrop();
+                    Glide.with(this).load(Constant.URL+"img/header.png")
+                            .apply(requestOptions).into(imgHead);
                 }else{
-                    Glide.with(this).load(LoginUser.getUserImage()).into(imgHead);
+                    RequestOptions requestOptions = new RequestOptions().circleCrop();
+                    Glide.with(this).load(LoginUser.getUserImage()).apply(requestOptions).into(imgHead);
                 }
                 tvClick.setText(LoginUser.getUserName());
             }
@@ -149,15 +156,15 @@ public class MineFragment extends Fragment {
                     if (LoginUser.getPhoneNumber().length()==0){
                         showDialog();
                     }else {
-//                        Intent intent5 = new Intent(getActivity(),MineMessageActivity.class);
-//                        startActivity(intent5);
+                        Intent intent5 = new Intent(getActivity(),MineMessageActivity.class);
+                        startActivity(intent5);
                     }
                     break;
                 case R.id.rl_personData:
                     if (LoginUser.getPhoneNumber().length()==0){
                         showDialog();
                     }else {
-                        Intent intent6 = new Intent(getActivity(),MinePersonDataActivity.class);
+                        Intent intent6 = new Intent(getContext(),MinePersonDataActivity.class);
                         startActivity(intent6);
                     }
                     break;

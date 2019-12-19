@@ -1,6 +1,7 @@
 package com.example.dell.expelliarmus;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -17,12 +18,14 @@ import java.util.List;
 
 public class MineMenuAdapter extends BaseAdapter{
     private List<CookBook> list;
+    private List<Integer> ids;
     private int itemResId;
     private Context context;
 
-    public MineMenuAdapter(Context context, List<CookBook> lists, int itemResId){
+    public MineMenuAdapter(Context context, List<CookBook> lists,List<Integer> ids, int itemResId){
         this.context = context;
         this.list = lists;
+        this.ids=ids;
         this.itemResId = itemResId;
     }
 
@@ -65,6 +68,7 @@ public class MineMenuAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context,MineMenuDetailsActivity.class);
+                intent.putExtra("menuId",ids.get(position));
                 intent.putExtra("id",list.get(position).getId());
                 intent.putExtra("description",list.get(position).getDescription());
                 intent.putExtra("images",list.get(position).getImages());
@@ -73,6 +77,7 @@ public class MineMenuAdapter extends BaseAdapter{
                 intent.putExtra("steps",list.get(position).getSteps());
                 intent.putExtra("likeNumber",list.get(position).getLikeNumber());
                 context.startActivity(intent);
+                ((Activity)context).finish();
             }
         });
         String strImages=list.get(position).getImages();

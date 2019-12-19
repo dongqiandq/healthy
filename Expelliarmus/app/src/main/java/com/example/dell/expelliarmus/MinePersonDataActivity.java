@@ -1,17 +1,20 @@
 package com.example.dell.expelliarmus;
 
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,11 +23,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Date;
 
-//import static com.google.gson.internal.bind.util.ISO8601Utils.format;
+import static com.example.dell.expelliarmus.LoginCommonFragment.LoginUser;
+import static com.google.gson.internal.bind.util.ISO8601Utils.format;
 
 //个人信息
 public class MinePersonDataActivity extends AppCompatActivity {
@@ -53,6 +70,11 @@ public class MinePersonDataActivity extends AppCompatActivity {
     private ImageView imghead;
     private TextView nickName;
     private TextView tvSex;
+    private TextView imageView;
+    private String nick;
+    private int which0;
+    private Util util;
+    private User LoginUser;
 
 //(1)
 //    private Drawable drawable;
@@ -68,61 +90,67 @@ public class MinePersonDataActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_person_data);
+        util=new Util(this);
+        LoginUser=util.getUserInfo();
 
-        TextView imageView = findViewById(R.id.img_return);
+        findViews();
+
+        if(LoginUser.getPhoneNumber().length()>0){
+            if(LoginUser.getUserImage().contains("/img/header.png")){
+                RequestOptions requestOptions = new RequestOptions().circleCrop();
+                Glide.with(this).load(Constant.URL+"img/header.png")
+                        .apply(requestOptions).into(imghead);
+            }else{
+                RequestOptions requestOptions = new RequestOptions().circleCrop();
+                Glide.with(this).load(LoginUser.getUserImage()).apply(requestOptions).into(imghead);
+            }
+        }
+        nickName.setText(LoginUser.getUserName()+"");
+        tvSex.setText(LoginUser.getSex());
+
+        MyListener myListener=new MyListener();
+        imageView.setOnClickListener(myListener);
+        head.setOnClickListener(myListener);
+        name.setOnClickListener(myListener);
+        sex.setOnClickListener(myListener);
+    }
+    private void findViews(){
+        imageView= findViewById(R.id.img_return);
         head = findViewById(R.id.rl_touxiang);
         name = findViewById(R.id.rl_name);
         sex = findViewById(R.id.rl_sex);
         tvSex = findViewById(R.id.et_sex);
         imghead = findViewById(R.id.img_head);
         nickName = findViewById(R.id.et_name);
-        final String nick = getIntent().getStringExtra("name");
-        if(nick != null){
-            nickName.setText(nick);
-        }
+    }
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Log.e("returnUri的值1","22222222");
-//                Intent intent = new Intent(MinePersonDataActivity.this,MainActivity.class);
-//                Log.e("returnUri的值2",returnUri+"");
+    public class MyListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.img_return:
+                    Intent intent = new Intent(MinePersonDataActivity.this,MainActivity.class);
 //                if (returnBitmap!=null){
 //                    intent.putExtra("img1",returnBitmap);
 //                }else {
 //                    intent.putExtra("img2",returnUri);
 //                }
-//                intent.putExtra("nick",nick.trim());
-//                startActivity(intent);
-                finish();
+                    startActivity(intent);
+                    finish();
+                    break;
+                case R.id.rl_touxiang:
+                    openDialog();
+                    break;
+                case R.id.rl_name:
+                    Intent intent1 = new Intent(MinePersonDataActivity.this,MinePersonNameActivity.class);
+                    startActivity(intent1);
+                    break;
+                case R.id.rl_sex:
+                    showChooseSexDialog();
+                    break;
             }
-        });
-        head.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialog();
-            }
-        });
-        name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MinePersonDataActivity.this,MinePersonNameActivity.class);
-                startActivity(intent);
-            }
-        });
-        sex.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showChooseSexDialog();
-            }
-        });
-
-    }
-
-    public byte[] Bitmap2Bytes(Bitmap bm){
-        ByteArrayOutputStream baos=new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG,100,baos);
-        return baos.toByteArray();
+        }
     }
 
     //显示修改性别的对话框
@@ -134,13 +162,19 @@ public class MinePersonDataActivity extends AppCompatActivity {
         builder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                tvSex.setText(items[which]);
+                which0=which;
                 Toast.makeText(MinePersonDataActivity.this,items[which],Toast.LENGTH_SHORT).show();
             }
         });
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Log.e("which值为",which+"");
+                UpdateSexAsync updateSexAsync=new UpdateSexAsync();
+                updateSexAsync.execute(Constant.URL+"UpdateUserSex",LoginUser.getId(),items[which0]);
+
+                LoginUser.setSex(items[which0]);
+                tvSex.setText(items[which0]);
                 dialog.dismiss();
             }
         });
@@ -152,6 +186,52 @@ public class MinePersonDataActivity extends AppCompatActivity {
         });
         dialog = builder.create();
         dialog.show();
+    }
+
+    /**
+     * 修改用户性别
+     */
+    public class UpdateSexAsync extends AsyncTask{
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            try {
+                HttpURLConnection connection=Util.getURLConnection((String)objects[0]);
+                OutputStream os=connection.getOutputStream();
+                JSONObject object=new JSONObject();
+                object.put("id",objects[1]);
+                object.put("userSex",objects[2]);
+                os.write(object.toString().getBytes());
+
+                InputStream is=connection.getInputStream();
+                byte[] buffer=new byte[256];
+                int len=is.read(buffer);
+                String info=new String(buffer,0,len);
+
+                Util.closeIO(is,os);
+                return info;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                return "no";
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "no";
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return "no";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            if ("no".equals((String)o)){
+                Toast.makeText(MinePersonDataActivity.this,"修改失败",Toast.LENGTH_SHORT).show();
+            }if("ok".equals((String)o)){
+                Toast.makeText(MinePersonDataActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
+            }if("not".equals((String)o)){
+                Toast.makeText(MinePersonDataActivity.this,"没有修改",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void openDialog() {
@@ -169,7 +249,7 @@ public class MinePersonDataActivity extends AppCompatActivity {
             public void doGetCamera() {
                 // 相机
                 headDialog.dismiss();
-//                camera();
+                camera();
             }
 
             @Override
@@ -189,20 +269,19 @@ public class MinePersonDataActivity extends AppCompatActivity {
         });
     }
 
-    // 相机
-//    private void camera() {
-//        Intent cameraintent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        String filename = format(new Date());
-//        ContentValues values = new ContentValues();
-//        values.put(MediaStore.Images.Media.TITLE, filename);
-//        photoUri =getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
-////        cameraFile =generatePhotoFile(this);//DiskUtils
-//        cameraintent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri );//Uri.fromFile(cameraFile)
-//
-//        String camera=photoUri.getPath();
-//        cameraFile=new File(camera);
-//        this.startActivityForResult(cameraintent, CAMERA_REQUEST);
-//    }
+    private void camera() {
+        Intent cameraintent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        String filename = format(new Date());
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, filename);
+        photoUri =getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+//        cameraFile =generatePhotoFile(this);//DiskUtils
+        cameraintent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri );//Uri.fromFile(cameraFile)
+
+        String camera=photoUri.getPath();
+        cameraFile=new File(camera);
+        this.startActivityForResult(cameraintent, CAMERA_REQUEST);
+    }
 
     // 图库——剪裁
     private void crop() {
@@ -211,12 +290,12 @@ public class MinePersonDataActivity extends AppCompatActivity {
         startActivityForResult(intent,CROP_1_REQUEST);
     }
 
-    // 图库
-    private void gallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        intent.setType("image/*");
-        startActivityForResult(intent,CHOOSE_PICTURE);
-    }
+//    // 图库
+//    private void gallery() {
+//        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+////        intent.setType("image/*");
+//        startActivityForResult(intent,CHOOSE_PICTURE);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -251,6 +330,8 @@ public class MinePersonDataActivity extends AppCompatActivity {
                 Bitmap bitmap1 = data.getExtras().getParcelable("data");
                 this.returnBitmap=Bitmap2Bytes(bitmap1);
                 imghead.setImageBitmap(bitmap1);
+                UpdateImageAsync updateImageAsync=new UpdateImageAsync();
+                updateImageAsync.execute(Constant.URL+"UpdateUserImage",LoginUser.getId(),bitmap1);
                 break;
 
             // 相机
@@ -303,6 +384,67 @@ public class MinePersonDataActivity extends AppCompatActivity {
         cursor.close();
         return res;
     }
+
+    public byte[] Bitmap2Bytes(Bitmap bm){
+        ByteArrayOutputStream baos=new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG,100,baos);
+        return baos.toByteArray();
+    }
+
+    /**
+     * 将图片传至服务器端
+     */
+    public class UpdateImageAsync extends AsyncTask{
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            try {
+                HttpURLConnection connection=Util.getURLConnection((String)objects[0]);
+                OutputStream os=connection.getOutputStream();
+                JSONObject object=new JSONObject();
+                object.put("userId",objects[1]);
+                object.put("image",Bitmap2Bytes((Bitmap)objects[2]));
+                os.write(object.toString().getBytes());
+                InputStream is=connection.getInputStream();
+                String content=Util.readInputStreamToString(is);
+                Util.closeIO(is,os);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //    //显示修改头像的对话框
 //    protected void showChoosePicDialog(){
 //        AlertDialog.Builder builder = new AlertDialog.Builder(this);

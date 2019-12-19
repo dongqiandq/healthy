@@ -7,6 +7,14 @@ public class Comment {
 	private String content;
 	private int sendPersonId;
 	private int likeNumber;
+	private String sendPersonName;
+
+	public String getSendPersonName() {
+		return sendPersonName;
+	}
+	public void setSendPersonName(String sendPersonName) {
+		this.sendPersonName = sendPersonName;
+	}
 	public int getId() {
 		return id;
 	}
@@ -50,6 +58,8 @@ public class Comment {
 		this.sendPersonId = sendPersonId;
 		this.likeNumber = likeNumber;
 	}
+
+	public Comment(){}
 	
 
 }

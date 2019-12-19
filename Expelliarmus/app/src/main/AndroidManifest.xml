@@ -107,6 +107,8 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- 友盟配置第三方登录 -->
 
+        <activity android:name=".NoMessageActivity"/>
+        <activity android:name=".MineMessageActivity"/>
         <activity android:name=".ListViewActivity" />
         <activity android:name=".IndexDetailsActivity" />
         <activity android:name=".ShipuActivity" />

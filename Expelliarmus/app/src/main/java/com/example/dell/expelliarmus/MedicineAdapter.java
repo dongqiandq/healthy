@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MedicineAdapter extends BaseAdapter {
-    private List<MedicineChest> list = new ArrayList<>();
+    private List<MedicineChest> list;
     private int itemResId;
     private Context context;
 

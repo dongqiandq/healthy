@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,13 +32,17 @@ public class IndexDetailsActivity extends AppCompatActivity {
     private TextView tvSollect;
     private TextView tvCaption;
     private TextView tvVersion;
+    private Util util;
     private int id;
+    private String tableName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index_details);
+        util = new Util(this);
         id=getIntent().getIntExtra("id",0);
+        tableName=getIntent().getStringExtra("tableName");
         sollect= findViewById(R.id.ll_collect);
         ivSollect= findViewById(R.id.iv_sollect);
         tvSollect= findViewById(R.id.tv_sollect);
@@ -59,31 +64,20 @@ public class IndexDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (ivSollect.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.hll_mine_shoucang).getConstantState())){
-                    if (null!=LoginUser){
+                    LoginUser = util.getUserInfo();
+                    if (LoginUser.getPhoneNumber().length()>0){
                         ivSollect.setImageResource(R.drawable.shoucangxuanhzong);
                         tvSollect.setTextColor(getResources().getColor(R.color.colorPrimary));
                         SixCollAsync sixCollAsync=new SixCollAsync();
-                        sixCollAsync.execute(Constant.URL+"SixCollection",1,1,"keep_fit",1);
+                        sixCollAsync.execute(Constant.URL+"SixCollection",1,LoginUser.getId(),tableName,id);
                     }else {
-                        Toast mToast=Toast.makeText(IndexDetailsActivity.this,null,Toast.LENGTH_SHORT);
-                        LinearLayout toastView=(LinearLayout)mToast.getView();
-                        TextView textView=new TextView(IndexDetailsActivity.this);
-                        textView.setTextSize(20);
-                        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT);
-                        textView.setLayoutParams(params);
-                        textView.setGravity(Gravity.CENTER_VERTICAL);
-                        textView.setPadding(15,0,15,20);
-                        mToast.setView(toastView);
-                        toastView.addView(textView);
-                        textView.setText("请先登录,再收藏");
-                        mToast.show();
+                        Toast.makeText(IndexDetailsActivity.this,"请先登录，再收藏！",Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     ivSollect.setImageResource(R.drawable.hll_mine_shoucang);
                     tvSollect.setTextColor(getResources().getColor(R.color.gray));
                     SixCollAsync sixCollAsync=new SixCollAsync();
-                    sixCollAsync.execute(Constant.URL+"SixCollection",0,1,"keep_fit",1);
+                    sixCollAsync.execute(Constant.URL+"SixCollection",0,LoginUser.getId(),tableName,id);
                 }
             }
         });

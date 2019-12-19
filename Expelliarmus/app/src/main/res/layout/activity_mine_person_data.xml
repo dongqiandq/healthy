@@ -62,8 +62,7 @@
                 android:layout_centerVertical="true"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@id/img_right1"
-                android:src="@drawable/yangzi" />
+                android:layout_toLeftOf="@id/img_right1" />
 
         </RelativeLayout>
 

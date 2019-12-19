@@ -7,7 +7,7 @@ public class Constant {
     public static int HRART_ZHENGCHANG = 9;
     public static int HRART_PIANDI = 10;
 
-    public static final String URL = "http://10.7.86.51:8080/HealthyProject/";
+    public static final String URL = "http://10.7.88.99:8080/HealthyProject/";
     public static final int EVENT_GET_VERIFICATION_CODE = 2;
     public static final int EVENT_GET_SUPPORTED_COUNTRIES = 3;
     public static final int EVENT_SUBMIT_VERIFICATION_CODE = 1;

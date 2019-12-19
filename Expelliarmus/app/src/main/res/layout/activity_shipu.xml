@@ -20,31 +20,38 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/btn_back"
                 android:onClick="backOnClick"
-                android:src="@drawable/houtui"
+                android:src="@drawable/titleback"
                 android:background="@null"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="10dp"/>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:alpha="0.5"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/head_style"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:layout_width="300dp"
                 android:layout_height="35dp"
-                android:background="@drawable/qita_style"
                 android:orientation="horizontal"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="10dp">
-                <EditText
+                android:layout_alignParentTop="true">
+                <ImageButton
+                    android:id="@+id/shipu_search"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:background="@null"
-                    android:layout_width="212dp"
-                    android:layout_height="35dp"
-                    android:textSize="14sp"
-                    android:hint="请输入搜索内容"/>
-                <Button
-                    android:layout_width="55dp"
-                    android:layout_height="35dp"
-                    android:text="搜索"
-                    android:textColor="#ffffff"
-                    android:background="@drawable/qita_button_style" />
+                    android:layout_gravity="center"
+                    android:src="@drawable/sousuo"/>
+                <EditText
+                    android:id="@+id/et_shipu_search"
+                    android:hint="请输入搜索内容"
+                    android:background="@null"
+                    android:textSize="15sp"
+                    android:alpha="0.5"
+                    android:paddingTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
         </RelativeLayout>
@@ -53,8 +60,6 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             tools:context=".MainActivity">
 
             <RelativeLayout
@@ -99,7 +104,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_margin="20dp">
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -225,8 +232,6 @@
                 android:layout_gravity="center"/>
             <LinearLayout
                 android:id="@+id/ll_recommend"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">

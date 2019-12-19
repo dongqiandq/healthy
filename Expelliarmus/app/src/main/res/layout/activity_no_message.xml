@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadingEdge="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ImageView
+        android:id="@+id/img_nomessage"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/nomessage1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp" />
+    <TextView
+        android:id="@+id/tv_nomessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="抱歉，没有找到相关内容"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/img_nomessage"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/tv_nomessage1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="o(╥﹏╥)o"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tv_nomessage"
+        android:textSize="18sp"/>
+    <Button
+        android:id="@+id/btn_nom_back"
+        android:layout_marginTop="20dp"
+        android:layout_width="110dp"
+        android:layout_height="38dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tv_nomessage1"
+        android:text="返 回"
+        android:background="@drawable/nomessage_button_style"/>
+
+</RelativeLayout>

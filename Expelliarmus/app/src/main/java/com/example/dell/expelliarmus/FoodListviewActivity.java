@@ -67,8 +67,8 @@ public class FoodListviewActivity extends AppCompatActivity {
                 break;
             case FoodConstent.MENU3:
                 category="温补驱寒";
-                initData();
-                findViews();
+//                initData();
+//                findViews();
                 break;
             case FoodConstent.MENU4:
                 category="清肺止咳";

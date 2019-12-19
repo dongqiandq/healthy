@@ -117,7 +117,7 @@ public class ListViewActivity extends AppCompatActivity {
             else {
                 Toast.makeText(ListViewActivity.this,"暂无内容",Toast.LENGTH_SHORT).show();
             }
-            myAdapter = new IndexMyAdapter(lists,ListViewActivity.this,R.layout.index_detail_item);
+            myAdapter = new IndexMyAdapter(1,tableName,lists,ListViewActivity.this,R.layout.index_detail_item);
             listView.setAdapter(myAdapter);
         }
     }
@@ -169,7 +169,7 @@ public class ListViewActivity extends AppCompatActivity {
             else {
                 Toast.makeText(ListViewActivity.this,"暂无内容",Toast.LENGTH_SHORT).show();
             }
-            myAdapter = new IndexMyAdapter(lists,ListViewActivity.this,R.layout.index_detail_item);
+            myAdapter = new IndexMyAdapter(1,tableName,lists,ListViewActivity.this,R.layout.index_detail_item);
             listView.setAdapter(myAdapter);
         }
     }

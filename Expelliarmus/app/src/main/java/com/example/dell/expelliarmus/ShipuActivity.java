@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,7 +34,9 @@ import java.util.List;
 public class ShipuActivity extends AppCompatActivity  implements ViewPager.OnPageChangeListener{
     List<CookBook> list = new ArrayList<>();
     private ImageButton back;
+    private int i = 0;
     private int height;
+    private int width;
     private ViewPager viewPager;
     private int[] imageResIds;
     private ArrayList<ImageView> imageViewList;
@@ -41,14 +45,27 @@ public class ShipuActivity extends AppCompatActivity  implements ViewPager.OnPag
     private TextView tv_desc;
     private int previousSelectedPosition = 0;
     boolean isRunning = false;
+    private EditText etShipuSearch;
+    private ImageButton button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shipu);
+        button = findViewById(R.id.shipu_search);
+        etShipuSearch = findViewById(R.id.et_shipu_search);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etShipuSearch.setText("");
+                Intent intent = new Intent(ShipuActivity.this,NoMessageActivity.class);
+                startActivity(intent);
+            }
+        });
         getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         DisplayMetrics metrics=new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         height=metrics.heightPixels;
+        width=metrics.widthPixels;
         initDate();
 
         back = findViewById(R.id.btn_back);
@@ -73,6 +90,7 @@ public class ShipuActivity extends AppCompatActivity  implements ViewPager.OnPag
             public void run() {
                 isRunning = true;
                 while (isRunning) {
+                    i++;
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
@@ -85,6 +103,16 @@ public class ShipuActivity extends AppCompatActivity  implements ViewPager.OnPag
                         public void run() {
                             System.out.println("设置当前位置: " + viewPager.getCurrentItem());
                             viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                            int j=(i-1)%5;
+                            LinearLayout.LayoutParams params1 =  new LinearLayout.LayoutParams(20,20);
+                            LinearLayout.LayoutParams params2 =  new LinearLayout.LayoutParams(12,12);
+                            params1.leftMargin = 15;
+                            params2.leftMargin = 15;
+                            ll_point_container.getChildAt(j).setLayoutParams(params1);
+                            ll_point_container.getChildAt((j+1)%5).setLayoutParams(params2);
+                            ll_point_container.getChildAt((j+2)%5).setLayoutParams(params2);
+                            ll_point_container.getChildAt((j+3)%5).setLayoutParams(params2);
+                            ll_point_container.getChildAt((j+4)%5).setLayoutParams(params2);
                         }
                     });
                 }
@@ -137,8 +165,8 @@ public class ShipuActivity extends AppCompatActivity  implements ViewPager.OnPag
             // 加小白点, 指示器
             pointView = new View(this);
             pointView.setBackgroundResource(R.drawable.whitecircle);
-            layoutParams = new LinearLayout.LayoutParams(10, 10);
-            if (i != 0)
+            layoutParams = new LinearLayout.LayoutParams(12, 12);
+//            if (i != 0)
                 layoutParams.leftMargin = 10;
             // 设置默认所有都不可用
             pointView.setEnabled(false);
@@ -148,7 +176,7 @@ public class ShipuActivity extends AppCompatActivity  implements ViewPager.OnPag
 
     private void initAdapter() {
         ll_point_container.getChildAt(0).setEnabled(true);
-        ll_point_container.getChildAt(0).setLayoutParams(new LinearLayout.LayoutParams(15,15));
+        ll_point_container.getChildAt(0).setLayoutParams(new LinearLayout.LayoutParams(20,20));
         tv_desc.setText(contentDescs[0]);
         previousSelectedPosition = 0;
 
@@ -284,21 +312,23 @@ public class ShipuActivity extends AppCompatActivity  implements ViewPager.OnPag
         LinearLayout.LayoutParams paramsPhoto = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 (int)(height*0.35));
         Util.getDBImage(ShipuActivity.this,Constant.URL+"img/"+image,imageView);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView.setLayoutParams(paramsPhoto);
         linearLayout.addView(imageView);
     }
     //添加文字
     public void addText(LinearLayout linearLayout,int i){
         final TextView rText = new TextView(this);
-        rText.setTextSize(25);
+        rText.setTextSize(23);
         rText.setText(list.get(i).getName());
         LinearLayout.LayoutParams paramsText = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        paramsText.setMargins(10,0,10,0);
+        paramsText.setMargins(7,0,7,0);
         rText.setLayoutParams(paramsText);
         linearLayout.addView(rText);
 
         final TextView dText=new TextView(this);
-        dText.setTextSize(20);
+        dText.setTextSize(18);
         if (Util.ChineseCount(list.get(i).getDescription())>10){
             String str=list.get(i).getDescription().substring(0,10);
             dText.setText(str+"......");
@@ -307,7 +337,7 @@ public class ShipuActivity extends AppCompatActivity  implements ViewPager.OnPag
         }
         LinearLayout.LayoutParams paramdText = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        paramdText.setMargins(10,0,10,0);
+        paramdText.setMargins(7,0,7,0);
         dText.setLayoutParams(paramdText);
         linearLayout.addView(dText);
     }

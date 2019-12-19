@@ -206,14 +206,18 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             //保存数据到本地
-            int userId = Integer.parseInt((String)o);
-            if(userId!=-1){
-                user.setId(userId);
-                util.saveUserInfo(user);
-                String info = util.getUserInfo().toString();
-                Log.e("user",info);
-                setResult(2);
-                finish();
+            if(!((String)o).equals("")){
+                int userId = Integer.parseInt((String)o);
+                if(userId!=-1){
+                    user.setId(userId);
+                    util.saveUserInfo(user);
+                    String info = util.getUserInfo().toString();
+                    Log.e("user",info);
+                    setResult(2);
+                    finish();
+                }else{
+                    Toast.makeText(LoginActivity.this,"登录失败!",Toast.LENGTH_SHORT).show();
+                }
             }else{
                 Toast.makeText(LoginActivity.this,"登录失败!",Toast.LENGTH_SHORT).show();
             }

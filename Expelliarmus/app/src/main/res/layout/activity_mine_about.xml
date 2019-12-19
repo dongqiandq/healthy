@@ -36,7 +36,7 @@
             android:layout_height="60dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/qing"/>
+            android:src="@drawable/logo"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,14 +57,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:text="客服电话：xxxxxxxxx"
+            android:text="客服电话：17730547078"
             android:layout_gravity="center_vertical"
             android:textSize="18sp"/>
         <TextView
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:text="官方微信：xxxxxxxxx"
+            android:text="官方微信：panzhixiao922"
             android:layout_gravity="center_vertical"
             android:textSize="18sp"/>
         <TextView
@@ -79,7 +79,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="相关介绍  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"/>
+            android:text="相关介绍 ：
+            本产品适合大部分人群，关注您的健康，为您提供各种建议。"/>
     </LinearLayout>
 
 </LinearLayout>

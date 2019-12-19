@@ -2,24 +2,46 @@ package com.example.dell.expelliarmus;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.dell.expelliarmus.MinePersonBodyActivity.finalBIM;
 
 public class IndexFragment extends Fragment implements ViewPager.OnPageChangeListener {
+    private List<KeepFit> list = new ArrayList<>();
+    private ListView lvIndex;
+    private IndexShouyeAdapter shouyeAdapter;
     private ViewPager viewPager;
     private int[] imageResIds;
     private ArrayList<ImageView> imageViewList;
@@ -28,11 +50,14 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
     private TextView tv_desc;
     private int previousSelectedPosition = 0;
     boolean isRunning = false;
+    private ImageButton button;
     private int i=0;
-//    private Context context =getActivity();
     private ListView lvindex;
     private Activity myContext;
     private LinearLayout llSearch;
+    private EditText etSearch;
+    private Util util;
+    private User LoginUser;
 
     LinearLayout l1;
     LinearLayout l2;
@@ -53,6 +78,34 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.index,container,false);
+        util=new Util(getContext());
+        LoginUser=util.getUserInfo();
+        lvIndex =view.findViewById(R.id.lv_index);
+        button = view.findViewById(R.id.btn_search);
+        etSearch = view.findViewById(R.id.et_search);
+
+        if (LoginUser.getPhoneNumber().length()>0 && finalBIM!=0.0){
+            HeadRecommedAsync headRecommedAsync=new HeadRecommedAsync();
+            headRecommedAsync.execute(Constant.URL+"HeadRecommed",1,LoginUser.getPhoneNumber(),finalBIM);
+        }else if (LoginUser.getPhoneNumber().length()>0){
+            HeadRecommedAsync headRecommedAsync=new HeadRecommedAsync();
+            headRecommedAsync.execute(Constant.URL+"HeadRecommed",2,LoginUser.getPhoneNumber(),0.0);
+        }else {
+            HeadRecommedAsync headRecommedAsync=new HeadRecommedAsync();
+            headRecommedAsync.execute(Constant.URL+"HeadRecommed",3,"",0.0);
+        }
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etSearch.setText("");
+                Intent intent = new Intent(getContext(),NoMessageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+//        lvIndex.setSelection(ListView.FOCUS_DOWN);
+
 //        return  view;
 
         // 初始化布局 View视图
@@ -120,6 +173,52 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         return view;
     }
 
+    /**
+     * 身体记录和BIM值
+     */
+    public class HeadRecommedAsync extends AsyncTask{
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            try {
+                HttpURLConnection connection=Util.getURLConnection((String)objects[0]);
+                OutputStream os=connection.getOutputStream();
+                JSONObject object=new JSONObject();
+                object.put("operation",objects[1]);
+                object.put("phoneNumber",objects[2]);
+                object.put("bim",objects[3]);
+                os.write(object.toString().getBytes());
+                InputStream is=connection.getInputStream();
+                String content=Util.readInputStreamToString(is);
+                Util.closeIO(is,os);
+                return content;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            if (null==o){
+                Toast.makeText(getContext(),"网络连接失败，请稍后再试",Toast.LENGTH_SHORT).show();
+            }else if (!"".equals(o.toString())){
+                Gson gson=new Gson();
+                Type type=new TypeToken<List<KeepFit>>(){}.getType();
+                list=gson.fromJson(o.toString(),type);
+            }else {
+                Toast.makeText(getContext(),"暂无数据",Toast.LENGTH_SHORT).show();
+            }
+//            Log.e("长度为",list.size()+"");
+            shouyeAdapter = new IndexShouyeAdapter(list,getContext(),R.layout.index_item);
+            lvIndex.setAdapter(shouyeAdapter);
+            shouyeAdapter.notifyDataSetChanged();
+            setListViewHeightBaseOnChildren(lvIndex);
+        }
+    }
 
     public class MyListener implements View.OnClickListener {
 
@@ -161,6 +260,24 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     break;
             }
         }
+    }
+
+    public void setListViewHeightBaseOnChildren(ListView listView){
+        IndexShouyeAdapter adapter = (IndexShouyeAdapter) listView.getAdapter();
+        if (adapter == null){
+            Log.e("状态","null");
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i=0;i<adapter.getCount();i++){
+            View listItem = adapter.getView(i,null,listView);
+            listItem.measure(0,0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount()-1));
+        listView.setLayoutParams(params);
     }
 
     @Override
